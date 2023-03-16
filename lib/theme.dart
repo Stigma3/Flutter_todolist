@@ -6,7 +6,7 @@ ThemeData lightTheme = ThemeData(
     color: Color.fromARGB(255, 152, 152, 151),
     size: 25,
   ),
-  appBarTheme: const AppBarTheme(backgroundColor: Colors.white, elevation: 0),
+  appBarTheme: const AppBarTheme(backgroundColor: Colors.lightBlueAccent, elevation: 0),
   tabBarTheme: const TabBarTheme(
     labelColor: Colors.black,
   ),
