@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/pages/categories.dart';
 import 'package:todo_app/components/todo_property_row.dart';
 import 'package:todo_app/providers/todo_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class AddTaskModalBottomSheet extends StatefulWidget {
   const AddTaskModalBottomSheet({super.key});
@@ -127,6 +129,14 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
               if (titleController.text.isNotEmpty) {
                 provider.addTodo(titleController.text.trim(),
                     descriptionController.text.trim(), date, time, category);
+                FirebaseFirestore.instance.collection('note').add({
+                  'category': category,
+                  'date' : date,
+                  'description' :  descriptionController.text.trim(),
+                  'time' : time,
+                  'title' : titleController.text.trim()
+
+                });
               }
               Navigator.of(context).pop();
             },
