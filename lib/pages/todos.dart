@@ -5,9 +5,21 @@ import 'package:todo_app/components/add_todo_modal_bottom_sheet.dart';
 import 'package:todo_app/components/search_bar.dart';
 import 'package:todo_app/components/todo_tile.dart';
 import 'package:todo_app/providers/todo_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class TodosPage extends StatelessWidget {
+
+class TodosPage extends StatefulWidget {
   const TodosPage({super.key});
+  @override
+  Apptodo createState() =>   Apptodo();
+}
+
+class  Apptodo extends State<TodosPage> {
+
+  final Stream<QuerySnapshot> adresseCollection = FirebaseFirestore.instance.collection('note').snapshots();
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +64,42 @@ class TodosPage extends StatelessWidget {
                     style: TextStyle(letterSpacing: 0.1),
                   ),
                 ),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: todos.length,
-                    itemBuilder: (context, index) =>
-                        TodoTile(todo: todos[index])),
+               // child: ListView.builder(
+                //    shrinkWrap: true,
+                //    itemCount: todos.length,
+                 //   itemBuilder: (context, index) =>
+                 //       TodoTile(todo: todos[index])),
+
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: adresseCollection,
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text("Loading");
+                    }
+
+                    return ListView(
+                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        return Text(data['title']);
+
+
+
+                      }).toList(),
+                    );
+                  },
+                ),
+
+
+
+
+
+
+
+
               ),
             ),
           ),
