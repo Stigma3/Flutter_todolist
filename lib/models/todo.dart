@@ -4,6 +4,7 @@ class Todo {
   String title;
   String date;
   String time;
+  bool isChecked =false;
   bool isComplete = false;
   bool toBeDeleted = false;
 
@@ -12,5 +13,6 @@ class Todo {
       required this.date,
       required this.description,
       required this.time,
+        this.isComplete = false,
       required this.category});
 }

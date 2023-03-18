@@ -21,6 +21,7 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
   String time = "";
   String category = "";
 
+
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -50,8 +51,8 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
           ),
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            IconButton(
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(children: [ IconButton(
               onPressed: () async {
                 await Navigator.of(context)
                     .push(MaterialPageRoute(
@@ -72,6 +73,7 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
                     category = "";
                   });
                 }),
+            ]),
             IconButton(
               onPressed: () async {
                 await showDatePicker(
@@ -134,7 +136,7 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
                   'date' : date,
                   'description' :  descriptionController.text.trim(),
                   'time' : time,
-                  'title' : titleController.text.trim()
+                  'title' : titleController.text.trim(),
 
                 });
               }

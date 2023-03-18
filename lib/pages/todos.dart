@@ -15,10 +15,7 @@ class TodosPage extends StatefulWidget {
 }
 
 class  Apptodo extends State<TodosPage> {
-
   final Stream<QuerySnapshot> adresseCollection = FirebaseFirestore.instance.collection('note').snapshots();
-
-
 
 
   @override
@@ -64,14 +61,14 @@ class  Apptodo extends State<TodosPage> {
                     style: TextStyle(letterSpacing: 0.1),
                   ),
                 ),
-               // child: ListView.builder(
-                //    shrinkWrap: true,
-                //    itemCount: todos.length,
-                 //   itemBuilder: (context, index) =>
-                 //       TodoTile(todo: todos[index])),
+                //child: ListView.builder(
+                    //shrinkWrap: true,
+                    //itemCount: todos.length,
+                    //itemBuilder: (context, index) =>
+                       // TodoTile(todo: todos[index])),
 
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: adresseCollection,
+                  stream: FirebaseFirestore.instance.collection('note').snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return const Text('Something went wrong');
@@ -81,13 +78,35 @@ class  Apptodo extends State<TodosPage> {
                       return const Text("Loading");
                     }
 
+                    bool isChecked = false; // Ajouter cette variable à la classe d'état
+
                     return ListView(
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return Text(data['title']);
-
-
-
+                        return ListTile(
+                          title: Row(
+                            children: [
+                              Text(data['title']),
+                              SizedBox(width: 8),
+                              // Ajouter "Fait!" si la case est cochée
+                            ],
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Text(data['category']),
+                              SizedBox(width: 8),
+                              Text(data['date'].toString()),
+                              SizedBox(width: 8),
+                              Text(data['time'].toString()),
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () async {
+                              await FirebaseFirestore.instance.collection('note').doc(document.id).delete();
+                            },
+                          ),
+                        );
                       }).toList(),
                     );
                   },

@@ -30,7 +30,7 @@ class _TodoTileState extends State<TodoTile> {
             InkWell(
               onTap: () => provider.toggleIsComplete(todo),
               child: Icon(
-                todo.isComplete ? LineIcons.checkCircle : LineIcons.circle,
+                todo.isComplete ? LineIcons.check : LineIcons.circle,
                 size: 25,
               ),
             ),
@@ -79,7 +79,7 @@ class _TodoTileState extends State<TodoTile> {
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [ 
+              children: [
                 InkWell(
                     onTap: () => provider.toggleToBeDeleted(todo),
                     child: todo.toBeDeleted
@@ -91,7 +91,7 @@ class _TodoTileState extends State<TodoTile> {
                     todo.category,
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
-                
+
               ],
             )
           ]),
