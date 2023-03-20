@@ -3,6 +3,7 @@ import 'package:todo_app/pages/completed_todos.dart';
 import 'package:todo_app/pages/deleted_todos.dart';
 import 'package:todo_app/pages/todos.dart';
 
+
 class Body extends StatelessWidget {
   const Body({super.key});
 
@@ -18,23 +19,18 @@ class Body extends StatelessWidget {
                 fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black),
           ),
         ),
-        bottom: TabBar(
-          indicatorColor: Theme.of(context).primaryColor,
-          tabs: const [
-            Tab(
-              text: "Todo",
-            ),
-            Tab(
-              text: "Completed",
-            ),
-            Tab(
-              text: "Deleted",
-            )
-          ],
-        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              // TODO: actualiser la collection "notes" de Firestore
+            },
+            child: const Text('Refresh'),
+          ),
+        ],
       ),
+
       body: const TabBarView(
-          children: [TodosPage(), CompletedTodosPage(), DeletedTodosPage()]),
+          children: [TodosPage(), DeletedTodosPage()]),
     );
   }
 }

@@ -16,7 +16,9 @@ class TodosPage extends StatefulWidget {
 
 class  Apptodo extends State<TodosPage> {
   final Stream<QuerySnapshot> adresseCollection = FirebaseFirestore.instance.collection('note').snapshots();
-
+  void refreshCollection() {
+    setState(() {}); // Rafraîchir la page en appelant setState
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +80,7 @@ class  Apptodo extends State<TodosPage> {
                       return const Text("Loading");
                     }
 
-                    bool isChecked = false; // Ajouter cette variable à la classe d'état
-
-                    return ListView(
+                    return ListView (
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                         return ListTile(
@@ -100,25 +100,20 @@ class  Apptodo extends State<TodosPage> {
                               Text(data['time'].toString()),
                             ],
                           ),
+
+
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () async {
                               await FirebaseFirestore.instance.collection('note').doc(document.id).delete();
                             },
+
                           ),
                         );
                       }).toList(),
                     );
                   },
                 ),
-
-
-
-
-
-
-
-
               ),
             ),
           ),
