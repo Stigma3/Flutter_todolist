@@ -24,11 +24,7 @@ class  Apptodo extends State<TodosPage> {
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
     final provider = Provider.of<TodoProvider>(context);
-    var todos = provider.allTodos
-        .where(
-          (element) => !element.isComplete && !element.toBeDeleted,
-        )
-        .toList();
+    var todos = provider.allTodos.where((element) => !element.toBeDeleted).toList();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -44,51 +40,59 @@ class  Apptodo extends State<TodosPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const Expanded(child: SearchBar()),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(LineIcons.horizontalSliders,color: Colors.black,),
-            ),
-          ]),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Visibility(
-                visible: todos.isNotEmpty,
-                replacement: const Center(
-                  child: Text(
-                    "You have no tasks",
-                    style: TextStyle(letterSpacing: 0.1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Expanded(child: SearchBar()),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    LineIcons.horizontalSliders,
+                    color: Colors.black,
                   ),
                 ),
-                //child: ListView.builder(
-                    //shrinkWrap: true,
-                    //itemCount: todos.length,
-                    //itemBuilder: (context, index) =>
-                       // TodoTile(todo: todos[index])),
-
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30),
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('note').snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  stream: FirebaseFirestore.instance
+                      .collection('note')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return const Text('Something went wrong');
                     }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const Text("Loading");
                     }
 
-                    return ListView (
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                    if (snapshot.data!.docs.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          "You have no tasks",
+                          style: TextStyle(letterSpacing: 0.1),
+                        ),
+                      );
+                    }
+
+                    return ListView(
+                      children: snapshot.data!.docs
+                          .map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
                         return ListTile(
                           title: Row(
                             children: [
                               Text(data['title']),
                               SizedBox(width: 8),
-                              // Ajouter "Fait!" si la case est cochée
                             ],
                           ),
                           subtitle: Row(
@@ -100,14 +104,14 @@ class  Apptodo extends State<TodosPage> {
                               Text(data['time'].toString()),
                             ],
                           ),
-
-
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () async {
-                              await FirebaseFirestore.instance.collection('note').doc(document.id).delete();
+                              await FirebaseFirestore.instance
+                                  .collection('note')
+                                  .doc(document.id)
+                                  .delete();
                             },
-
                           ),
                         );
                       }).toList(),
@@ -116,9 +120,10 @@ class  Apptodo extends State<TodosPage> {
                 ),
               ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
 }
+

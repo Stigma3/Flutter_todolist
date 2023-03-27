@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/pages/completed_todos.dart';
 import 'package:todo_app/pages/deleted_todos.dart';
 import 'package:todo_app/pages/todos.dart';
+
 
 
 class Body extends StatelessWidget {
@@ -19,14 +19,6 @@ class Body extends StatelessWidget {
                 fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black),
           ),
         ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              // TODO: actualiser la collection "notes" de Firestore
-            },
-            child: const Text('Refresh'),
-          ),
-        ],
       ),
 
       body: const TabBarView(
