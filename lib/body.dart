@@ -14,7 +14,7 @@ class Body extends StatelessWidget {
         title: const Padding(
           padding: EdgeInsets.only(top: 15, bottom: 10),
           child: Text(
-            "Todo List",
+            "RMB List",
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black),
           ),
