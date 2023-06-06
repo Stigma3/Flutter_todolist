@@ -47,13 +47,7 @@ class  Apptodo extends State<TodosPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Expanded(child: SearchBar()),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    LineIcons.horizontalSliders,
-                    color: Colors.black,
-                  ),
-                ),
+
               ],
             ),
             Expanded(
